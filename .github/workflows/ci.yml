@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  core:
+    name: DumpCore on Linux (format, tests)
+    runs-on: ubuntu-24.04
+    container: swift:6.2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Format
+        run: swift format lint --strict --recursive Packages DumpApp
+      - name: Tests
+        run: swift test --package-path Packages/DumpCore
+
+  app:
+    name: App build on macOS
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate the project
+        run: xcodegen generate
+      - name: Build for the Simulator
+        run: >-
+          xcodebuild build
+          -project Dump.xcodeproj
+          -scheme Dump
+          -destination 'generic/platform=iOS Simulator'
+          CODE_SIGNING_ALLOWED=NO

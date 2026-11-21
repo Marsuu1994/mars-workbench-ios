@@ -1,0 +1,12 @@
+// The values every build reads. Your own Config/Secrets.xcconfig (git ignores
+// it; copy Secrets.example.xcconfig) overrides them: the token, your signing
+// team, and a local server when you want one.
+//
+// `//` starts a comment in an xcconfig file, so a URL is written with `$()`
+// between its two slashes.
+
+DUMP_API_BASE_URL = https:/$()/mars-workbench.vercel.app
+DUMP_API_TOKEN =
+DEVELOPMENT_TEAM =
+
+#include? "Secrets.xcconfig"
